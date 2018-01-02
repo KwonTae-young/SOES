@@ -53,6 +53,8 @@
 #define ESC_RESET_CTRL_REG       0x1F8
 #define ESC_RESET_CTRL_RST       BIT(6)
 
+#define ESC_BYTE_TEST_REG        0x064
+
 static int lan9252 = -1;
 
 /* lan9252 singel write */
@@ -106,6 +108,9 @@ static void ESC_read_csr (uint16_t address, void *buf, uint16_t len)
 
    do
    {
+      if (lan9252_read_32(ESC_BYTE_TEST_REG) != 0x87654321)
+         break;
+
       value = lan9252_read_32(ESC_CSR_CMD_REG);
    } while(value & ESC_CSR_CMD_BUSY);
 
@@ -125,6 +130,9 @@ static void ESC_write_csr (uint16_t address, void *buf, uint16_t len)
 
    do
    {
+      if (lan9252_read_32(ESC_BYTE_TEST_REG) != 0x87654321)
+         break;
+
       value = lan9252_read_32(ESC_CSR_CMD_REG);
    } while(value & ESC_CSR_CMD_BUSY);
 }
@@ -147,6 +155,9 @@ static void ESC_read_pram (uint16_t address, void *buf, uint16_t len)
 
    do
    {
+      if (lan9252_read_32(ESC_BYTE_TEST_REG) != 0x87654321)
+         break;
+
       value = lan9252_read_32(ESC_PRAM_RD_CMD_REG);
    }while(value & ESC_PRAM_CMD_BUSY);
 
@@ -158,6 +169,9 @@ static void ESC_read_pram (uint16_t address, void *buf, uint16_t len)
 
    do
    {
+      if (lan9252_read_32(ESC_BYTE_TEST_REG) != 0x87654321)
+         break;
+
       value = lan9252_read_32(ESC_PRAM_RD_CMD_REG);
    }while((value & ESC_PRAM_CMD_AVAIL) == 0);
 
@@ -233,6 +247,9 @@ static void ESC_write_pram (uint16_t address, void *buf, uint16_t len)
 
    do
    {
+      if (lan9252_read_32(ESC_BYTE_TEST_REG) != 0x87654321)
+         break;
+
       value = lan9252_read_32(ESC_PRAM_WR_CMD_REG);
    }while(value & ESC_PRAM_CMD_BUSY);
 
@@ -244,6 +261,9 @@ static void ESC_write_pram (uint16_t address, void *buf, uint16_t len)
 
    do
    {
+      if (lan9252_read_32(ESC_BYTE_TEST_REG) != 0x87654321)
+         break;
+
       value = lan9252_read_32(ESC_PRAM_WR_CMD_REG);
    }while((value & ESC_PRAM_CMD_AVAIL) == 0);
 
